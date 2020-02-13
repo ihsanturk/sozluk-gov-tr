@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Updated: 2020 Feb 09 22:47:02
+# Updated: 2020 Feb 12 18:12:48
+#
+# Requirements:
+#   - jq
+#   - curl
+
+url='https://sozluk.gov.tr/gts'
+cachedir=$HOME/.cache/sozlukgovtr
+mkdir -p $cachedir
+
+( [ $# -gt 0 ] && echo $@ || cat /dev/stdin ) | while read args; do 
+	cache=$cachedir/`echo $args | sed 's/ /+/g'`.json
+	[ -f $cache ] || curl -G --data-urlencode "ara=$args" -so $cache $url &&
+	cat $cache | jq -r '.[].anlamlarListe[].anlam' 2> /dev/null;
+done
