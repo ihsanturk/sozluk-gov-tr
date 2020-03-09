@@ -20,6 +20,8 @@ install ./imla ~/.local/bin/
 imla # opens the fzf and you can search all over the 90k phrases.
 ```
 
+![image](./img/imla_usage.png "Imla Usage with fzf")
+
 ```sh
 sozlukgovtr [ phrase ]
 ```
