@@ -1,18 +1,19 @@
 #!/bin/sh
-#
-# Updated: 2020 Feb 09 22:47:02
-# Updated: 2020 Feb 12 18:12:48
-#
-# Requirements:
-#   - jq
-#   - curl
 
-url='https://sozluk.gov.tr/gts'
+# =========================================================================== #
+# File:        sozlukgovtr                                                    #
+# Description: get meaning of a phrase from https://sozluk.gov.tr             #
+# Author:      ihsan <ihsanl at pm dot me>                                    #
+# Updated At:  1586565423                                                     #
+# License:     MIT License                                                    #
+# Requirements: jq, curl                                                      #
+# =========================================================================== #
+
+URL='https://sozluk.gov.tr/gts'
 CACHEDIR=/usr/share/sozlukgovtr/
-[ -d $CACHEDIR ] || { mkdir -p $CACHEDIR; sudo chmod 777 $CACHEDIR; }
 
 ( [ $# -gt 0 ] && echo $@ || cat /dev/stdin ) | while read args; do 
-	cache=$CACHEDIR/`echo $args | tr ' ' '+'`.json
-	[ -f $cache ] || curl -G --data-urlencode "ara=$args" -so $cache $url &&
-	cat $cache | jq -r '.[].anlamlarListe[].anlam' 2> /dev/null;
+	CACHE=$CACHEDIR/`echo $args | tr ' ' '+'`.json
+	[ -f $CACHE ] || curl -G --data-urlencode "ara=$args" -so $CACHE $URL &&
+	cat $CACHE | jq -r '.[].anlamlarListe[].anlam' 2> /dev/null;
 done
